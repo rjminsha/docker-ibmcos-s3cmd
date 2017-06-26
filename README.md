@@ -15,14 +15,28 @@ Using [Alpine linux](https://hub.docker.com/_/alpine/).  This image is 31MB.
     docker run \
     --env ACCESS_KEY_ID=${ACCESS_KEY_ID} \
     --env SECRET_ACCESS_ID=${SECRET_ACCESS_ID} \
-    --env cmd=sync-local-to-s3 \
-    --env DEST_S3=${BUCKET}  \
     -v ${LOCAL_DIR}:/store \
     rjminsha/docker-ibmcos-s3cmd s3cmd <commands>
 
-    * where commands are for example:
-      - ls
-    * Change `LOCAL_DIR` to local folder you want to use with s3
+    Example: listing buckets
+    ```
+    docker run \
+    --env ACCESS_KEY_ID=${ACCESS_KEY_ID} \
+    --env SECRET_ACCESS_ID=${SECRET_ACCESS_ID} \
+    -v ~/code/2016/cto/charts/tmp-build/:/charts \
+    rjminsha/docker-ibmcos-s3cmd \
+    s3cmd ls
+    ```
+
+    Example updating a set of Helm Charts and making public URLS
+    ```
+     docker run \
+     --env ACCESS_KEY_ID=${ACCESS_KEY_ID} \
+     --env SECRET_ACCESS_ID=${SECRET_ACCESS_ID} \
+     -v ~/code/2016/cto/charts/tmp-build/:/charts \
+     rjminsha/docker-ibmcos-s3cmd \
+     s3cmd put -P -r /charts s3://removeme
+    ```
 
 ## Copy from local to IBM COS S3:
 
@@ -79,4 +93,5 @@ Now you can run `s3cmd` commands
     s3cmd ls /
 
 # Credits
-Based off of https://hub.docker.com/r/garland/docker-s3cmd/ 
+- https://hub.docker.com/r/garland/docker-s3cmd/
+- https://www.ibm.com/blogs/bluemix/2017/03/static-websites-cloud-object-storage-cos/
